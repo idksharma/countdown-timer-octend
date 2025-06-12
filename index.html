@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Countdown Timer</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    #countdown {
+      font-size: 2.5rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="countdown">Loading...</div>
+
+  <script>
+    function updateCountdown() {
+      const now = new Date();
+      const targetDate = new Date('2025-11-01T00:00:00');
+
+      if (now >= targetDate) {
+        document.getElementById("countdown").innerText = "0 Months 0 Days 0 Seconds";
+        return;
+      }
+
+      let totalMonths = (targetDate.getFullYear() - now.getFullYear()) * 12 + (targetDate.getMonth() - now.getMonth());
+      let tempDate = new Date(now.getFullYear(), now.getMonth() + totalMonths, now.getDate());
+
+      if (tempDate > targetDate) {
+        totalMonths -= 1;
+        tempDate = new Date(now.getFullYear(), now.getMonth() + totalMonths, now.getDate());
+      }
+
+      const remainingTime = targetDate - now;
+      const msInDay = 1000 * 60 * 60 * 24;
+      const msInSecond = 1000;
+
+      const days = Math.floor((targetDate - new Date(now.getFullYear(), now.getMonth() + totalMonths, now.getDate())) / msInDay);
+      const seconds = Math.floor((remainingTime % msInDay) / msInSecond);
+
+      document.getElementById("countdown").innerText = 
+        `${totalMonths} Month${totalMonths !== 1 ? 's' : ''} ` +
+        `${days} Day${days !== 1 ? 's' : ''} ` +
+        `${seconds} Second${seconds !== 1 ? 's' : ''}`;
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+
+</body>
+</html>
